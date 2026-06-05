@@ -258,6 +258,28 @@ Rejected:
 - Muzzle flash while running/looting/returning.
 - Player shooting while away from turret.
 
+## Grounded Movement Required
+
+The player must physically run on the terrain, not fly through a camera tween.
+
+If Maker creates a floating/elevated path or moves the camera directly from turret Y to crate Y, stop and use `MAKER_GROUNDED_AIRDROP_MOVEMENT.md`.
+
+Required:
+
+- Move only `x,z` along the airdrop path.
+- Sample terrain height every frame with `getGroundY(x, z)`.
+- Set camera height from `getGroundY(x, z) + EYE_HEIGHT`.
+- Build a connected visible slope/ramp from hilltop to wasteland.
+- Add a visible sandbag exit gap or ramp.
+
+Rejected:
+
+- Direct 3D interpolation from turret camera position to crate camera position.
+- Flying arc animation.
+- Invisible elevated walkway.
+- Floating layer between hilltop and airdrop.
+- Camera movement that ignores visible terrain.
+
 ## Airdrop Landing Still Required
 
 The crate must land on the terrain surface:
@@ -311,6 +333,7 @@ Reject if any first-person mounted gun part is visible in states 2-4.
 Physical airdrop pickup is required. Do not replace it with remote collection.
 
 Read MAKER_PHYSICAL_AIRDROP_COLLECTION.md and implement exactly.
+If the player appears to fly or the slope is disconnected, also read MAKER_GROUNDED_AIRDROP_MOVEMENT.md before continuing.
 
 The design requirement:
 - Player must leave the turret to collect the airdrop.
@@ -324,6 +347,8 @@ Implementation requirement:
 - If any gun/gun barrel/muzzle/ammo mesh remains attached to camera outside TURRET, remove it.
 - Player cannot shoot while off turret.
 - A stationary turret world model may stay on the hilltop.
+- Player movement to and from the crate must follow terrain ground height every frame.
+- Do not use direct 3D camera/player interpolation to the crate.
 
 Modes:
 - TURRET
@@ -340,4 +365,5 @@ Acceptance:
 - Gun reappears only after returning to TURRET mode.
 - Shooting is disabled in all off-turret modes.
 - Airdrop lands above terrain.
+- Player walks down the visible slope and runs back up the visible slope without flying.
 ```

@@ -31,6 +31,7 @@ Do not add progression, robots, ads, or new enemies before the scene passes acce
 - `MAKER_TEXTURE_AIRDROP_FIX.md`: texture/material pass plus airdrop landing and collection-state fixes.
 - `MAKER_HARD_BLOCKERS.md`: hard blocking fixes for gun-visible airdrop collection and rejected block-grid zombies.
 - `MAKER_PHYSICAL_AIRDROP_COLLECTION.md`: required implementation for physical airdrop pickup as a risk/reward decision.
+- `MAKER_GROUNDED_AIRDROP_MOVEMENT.md`: required implementation for grounded run-to-airdrop movement and connected ramp terrain.
 - `MAKER_AIRDROP_REMOTE_COLLECT.md`: fallback design that removes run-to-airdrop and collects supplies remotely from the turret.
 
 ## Scene Identity
@@ -229,6 +230,8 @@ That pass should only fix material/texture identity, terrain-aware airdrop heigh
 If Maker still shows the first-person gun while collecting airdrops, or still uses blocky/grid/Minecraft-style zombies, ask Maker to stop all other work and read `MAKER_HARD_BLOCKERS.md`.
 
 Physical airdrop pickup is the current product direction. If Maker still shows the gun while collecting airdrops, use `MAKER_PHYSICAL_AIRDROP_COLLECTION.md` and require hard detach of `FirstPersonWeaponRoot` outside turret mode.
+
+If the player flies to the airdrop, moves through an elevated layer, or the slope looks like disconnected stacked geometry, use `MAKER_GROUNDED_AIRDROP_MOVEMENT.md` and require terrain-following movement before any other work.
 
 Only use `MAKER_AIRDROP_REMOTE_COLLECT.md` if the user explicitly approves removing physical pickup later.
 
