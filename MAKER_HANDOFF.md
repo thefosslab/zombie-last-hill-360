@@ -30,6 +30,7 @@ Do not add progression, robots, ads, or new enemies before the scene passes acce
 - `MAKER_ENEMY_COMBAT_FIX.md`: enemy model/material and shooting hit detection bugfix rules.
 - `MAKER_TEXTURE_AIRDROP_FIX.md`: texture/material pass plus airdrop landing and collection-state fixes.
 - `MAKER_HARD_BLOCKERS.md`: hard blocking fixes for gun-visible airdrop collection and rejected block-grid zombies.
+- `MAKER_AIRDROP_REMOTE_COLLECT.md`: fallback design that removes run-to-airdrop and collects supplies remotely from the turret.
 
 ## Scene Identity
 
@@ -225,6 +226,8 @@ If the game still looks too plain, lacks texture design, drops airdrops undergro
 That pass should only fix material/texture identity, terrain-aware airdrop height, and airdrop collection player state.
 
 If Maker still shows the first-person gun while collecting airdrops, or still uses blocky/grid/Minecraft-style zombies, ask Maker to stop all other work and read `MAKER_HARD_BLOCKERS.md`.
+
+If Maker still cannot fix the gun-visible airdrop pickup after that, stop trying to hide the weapon and switch to `MAKER_AIRDROP_REMOTE_COLLECT.md`. This removes physical airdrop pickup entirely and keeps the player on the turret.
 
 ## Maker Prompt: Phase 0 Scene
 
