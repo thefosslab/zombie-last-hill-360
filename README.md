@@ -29,6 +29,8 @@ The root `index.html` redirects to `original/`.
 - `original/assets/`: downloaded game images and audio
 - `original/vendor/three.min.js`: local Three.js r128
 - `play.json`, `full.json`: extracted Astrocade context packages
+- `MAKER_HANDOFF.md`: scene reconstruction instructions for Maker
+- `ART_DIRECTION.md`: color, lighting, material, and readability rules
 
 Verified locally with Chrome headless WebGL: the original start screen renders from local files.
 
@@ -42,3 +44,5 @@ Verified locally with Chrome headless WebGL: the original start screen renders f
 See `DESIGN.md` for the current product direction.
 
 See `MAKER_HANDOFF.md` before asking Maker to rebuild or extend the game. The first Maker task should be scene reconstruction only, not progression or monetization.
+
+After the scene structure is correct, use `ART_DIRECTION.md` for the color pass.

@@ -26,6 +26,7 @@ Do not add progression, robots, ads, or new enemies before the scene passes acce
 - `original/asset_map.json`: local asset list and prompts.
 - `original/assets/`: downloaded images and audio.
 - `DESIGN.md`: product direction for in-run roguelite and out-of-run progression.
+- `ART_DIRECTION.md`: color, lighting, material, and readability rules for Maker art passes.
 
 ## Scene Identity
 
@@ -201,6 +202,12 @@ Required first pass HUD:
 - Game over/settlement screen placeholder.
 
 Do not focus on polishing HUD before the 3D scene is correct.
+
+## Art Direction
+
+After the scene structure is accepted, ask Maker to read `ART_DIRECTION.md` and perform an art/color pass only.
+
+Do not let Maker change layout, camera, spawning, progression, robots, or monetization during the color pass.
 
 ## Maker Prompt: Phase 0 Scene
 
