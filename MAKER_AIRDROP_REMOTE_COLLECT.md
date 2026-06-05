@@ -1,10 +1,10 @@
 # Maker Fallback: Remote Airdrop Collection
 
-Use this document if Maker still shows the first-person gun while the player runs to collect an airdrop.
+This is not the current product direction.
 
-This is now the recommended fallback. Remove the run-to-airdrop sequence entirely.
+The current direction requires physical airdrop pickup. Use `MAKER_PHYSICAL_AIRDROP_COLLECTION.md` first.
 
-Do not keep trying to hide the gun during a run animation. If Maker cannot handle the player state machine, the correct product solution is to keep the player on the turret and collect supplies remotely.
+Only use this remote collection fallback if the user explicitly approves removing physical pickup later.
 
 ## New Airdrop Design
 

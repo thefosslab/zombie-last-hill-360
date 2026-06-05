@@ -34,7 +34,8 @@ The root `index.html` redirects to `original/`.
 - `MAKER_ENEMY_COMBAT_FIX.md`: enemy visuals and hit detection fix instructions
 - `MAKER_TEXTURE_AIRDROP_FIX.md`: texture/material pass and airdrop state bugfix instructions
 - `MAKER_HARD_BLOCKERS.md`: hard blocker instructions for gun-visible pickup and rejected block-grid zombies
-- `MAKER_AIRDROP_REMOTE_COLLECT.md`: fallback that removes run-to-airdrop and uses remote supply collection
+- `MAKER_PHYSICAL_AIRDROP_COLLECTION.md`: required physical airdrop pickup implementation
+- `MAKER_AIRDROP_REMOTE_COLLECT.md`: non-current fallback that removes run-to-airdrop and uses remote supply collection
 
 Verified locally with Chrome headless WebGL: the original start screen renders from local files.
 
@@ -57,4 +58,6 @@ If the game still looks too plain, airdrops clip underground, or the player carr
 
 If the player still carries the gun during airdrop pickup or zombies still look blocky/grid-like, use `MAKER_HARD_BLOCKERS.md` and stop all other work until those are fixed.
 
-If Maker still cannot fix gun-visible airdrop pickup, switch to `MAKER_AIRDROP_REMOTE_COLLECT.md` and remove physical airdrop pickup entirely.
+Physical airdrop pickup is the current direction. If Maker still shows the gun while collecting airdrops, use `MAKER_PHYSICAL_AIRDROP_COLLECTION.md` and require hard detach of `FirstPersonWeaponRoot` outside turret mode.
+
+Only use `MAKER_AIRDROP_REMOTE_COLLECT.md` if physical pickup is explicitly removed later.
