@@ -29,6 +29,7 @@ Do not add progression, robots, ads, or new enemies before the scene passes acce
 - `ART_DIRECTION.md`: color, lighting, material, and readability rules for Maker art passes.
 - `MAKER_ENEMY_COMBAT_FIX.md`: enemy model/material and shooting hit detection bugfix rules.
 - `MAKER_TEXTURE_AIRDROP_FIX.md`: texture/material pass plus airdrop landing and collection-state fixes.
+- `MAKER_HARD_BLOCKERS.md`: hard blocking fixes for gun-visible airdrop collection and rejected block-grid zombies.
 
 ## Scene Identity
 
@@ -97,7 +98,7 @@ Sandbags:
 - Each block roughly `2 x 1 x 1`.
 - Main layer around Y `10.7`.
 - Second stacked layer every other sandbag around Y `11.5`.
-- Blocky/Minecraft-like style is acceptable.
+- Blocky style is acceptable for sandbags only. Do not apply this to enemy characters.
 
 Cardinal decorations:
 
@@ -222,6 +223,8 @@ That pass should only fix enemy materials/models, invisible hit colliders, shoot
 If the game still looks too plain, lacks texture design, drops airdrops underground, or keeps the first-person gun visible while collecting supplies, ask Maker to read `MAKER_TEXTURE_AIRDROP_FIX.md`.
 
 That pass should only fix material/texture identity, terrain-aware airdrop height, and airdrop collection player state.
+
+If Maker still shows the first-person gun while collecting airdrops, or still uses blocky/grid/Minecraft-style zombies, ask Maker to stop all other work and read `MAKER_HARD_BLOCKERS.md`.
 
 ## Maker Prompt: Phase 0 Scene
 

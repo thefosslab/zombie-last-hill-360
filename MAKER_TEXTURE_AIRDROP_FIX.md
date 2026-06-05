@@ -29,7 +29,7 @@ Fix in this order:
 
 ## Texture And Material Pass
 
-The game can remain low-poly/blocky, but it cannot look like untextured placeholder geometry.
+The game can remain low-poly, but it cannot look like untextured placeholder geometry. Zombies must not be blocky/grid/Minecraft-style.
 
 Every major object class needs either:
 
@@ -51,7 +51,7 @@ Flat single-color materials are only acceptable for tiny UI markers, hit flashes
 | Dead wood | brown grain lines, darker cracks |
 | Gun | dark blue-black metal, steel highlights, brass/copper detail |
 | Airdrop crate | red crate body, blue tarp/top, rope/metal corner accents |
-| Zombies | green skin, teal shirt, dark pants, visible eyes/mouth |
+| Zombies | low-poly horror humanoid, green skin, teal shirt, dark pants, visible eyes/mouth; no block-grid/Minecraft style |
 | Water/swamp | dark teal with subtle tiling/noise |
 
 ## Local Assets To Reuse
@@ -62,8 +62,9 @@ If Maker can load local assets, use these first:
 original/assets/hilltop_ground_texture_hilltop_ground_texture_136b6627-ba95-4e77-a9db-e6fb1461654b.webp
 original/assets/beach_sand_texture_beach_sand_texture_b678f970-52a4-49ab-8e7a-c17befdad8ba.webp
 original/assets/ocean_water_texture_ocean_water_texture_2cb3b5c6-57f8-4bd0-8a35-68ec393b79a2.webp
-original/assets/zombie_texture_zombie_texture_dffb99f7-a6c8-4cb6-97a1-40611bd2ccea.webp
 ```
+
+Do not use the old `zombie_texture` as the final enemy look if it produces block-grid/Minecraft-style zombies.
 
 Texture setup:
 
@@ -145,6 +146,7 @@ Reject Maker output if:
 - Sandbags are plain boxes with no seams/noise.
 - The gun is a flat black shape.
 - Zombies have no visible facial/body color separation.
+- Zombies are cube-grid/Minecraft style.
 - Ruins are pure black blocks.
 - Airdrop crate is a plain gray or black cube.
 
@@ -317,6 +319,19 @@ Render/update guard:
 firstPersonGun.visible = playerMode === PlayerMode.TURRET;
 ```
 
+If the gun is still visible, hiding once is not enough. Put every first-person gun mesh under one root named `FirstPersonWeaponRoot`, run the visibility guard every frame after weapon/camera updates, or detach the root from the camera during airdrop modes:
+
+```js
+function enforcePlayerModeVisuals() {
+  const inTurret = playerMode === PlayerMode.TURRET;
+  firstPersonWeaponRoot.visible = inTurret;
+  firstPersonWeaponRoot.traverse((node) => {
+    if (node.isMesh || node.isLine || node.isSprite) node.visible = inTurret;
+  });
+  canShoot = inTurret;
+}
+```
+
 ## Airdrop Collection Acceptance
 
 Required:
@@ -334,6 +349,7 @@ Reject if:
 - The crate clips underground.
 - The crate shadow floats far above or below the terrain.
 - The player still sees the machine gun while moving to the crate.
+- Any first-person weapon mesh is visible outside TURRET mode.
 - The player can fire while looting.
 - The return state does not restore the gun.
 
@@ -357,7 +373,7 @@ Texture/material requirements:
   - hilltop_ground_texture
   - beach_sand_texture
   - ocean_water_texture
-  - zombie_texture
+- Do not use block-grid/Minecraft zombie style.
 - If local texture loading is unreliable, create procedural canvas textures with noise/seams/grain.
 - Sandbags need tan fabric, darker seams, stains, and side shading.
 - Terrain needs dirt/rock noise, not a flat brown/gray plane.
@@ -377,7 +393,7 @@ Airdrop collection requirements:
   - RUN_TO_AIRDROP
   - LOOT_AIRDROP
   - RETURN_TO_TURRET
-- First-person machine gun is visible only in TURRET mode.
+- First-person machine gun is visible only in TURRET mode. If hiding fails, detach the weapon root from the camera during all airdrop states.
 - Player cannot shoot while running to/looting/returning from airdrop.
 - It is okay to leave a stationary turret model on the hilltop while the player runs.
 - Restore the first-person gun only after the player returns to the hilltop.

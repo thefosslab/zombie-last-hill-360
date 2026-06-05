@@ -33,6 +33,7 @@ The root `index.html` redirects to `original/`.
 - `ART_DIRECTION.md`: color, lighting, material, and readability rules
 - `MAKER_ENEMY_COMBAT_FIX.md`: enemy visuals and hit detection fix instructions
 - `MAKER_TEXTURE_AIRDROP_FIX.md`: texture/material pass and airdrop state bugfix instructions
+- `MAKER_HARD_BLOCKERS.md`: hard blocker instructions for gun-visible pickup and rejected block-grid zombies
 
 Verified locally with Chrome headless WebGL: the original start screen renders from local files.
 
@@ -52,3 +53,5 @@ After the scene structure is correct, use `ART_DIRECTION.md` for the color pass.
 If enemies look like gray placeholders or cannot be killed reliably, use `MAKER_ENEMY_COMBAT_FIX.md`.
 
 If the game still looks too plain, airdrops clip underground, or the player carries the gun while collecting supplies, use `MAKER_TEXTURE_AIRDROP_FIX.md`.
+
+If the player still carries the gun during airdrop pickup or zombies still look blocky/grid-like, use `MAKER_HARD_BLOCKERS.md` and stop all other work until those are fixed.

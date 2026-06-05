@@ -37,7 +37,8 @@ Build one readable normal zombie before adding variants.
 
 Required silhouette:
 
-- Blocky head.
+- Hunched horror humanoid, not Minecraft/block-grid.
+- Rounded or capsule-like head, not a cube.
 - Torso.
 - Two arms.
 - Two legs.
@@ -56,24 +57,18 @@ Required colors:
 | Mouth | `#2A1111` |
 
 Do not use a gray capsule, gray cylinder, or gray humanoid shell as the visible zombie.
+Do not use cube head/body/arms/legs as the final zombie style.
+Do not use Minecraft-style pixel-grid zombies.
 
-### Use Texture If Possible
+### Do Not Use Old Block Texture As Final Style
 
-If Maker can load local assets, use:
+The old exported texture below is pixel-grid/Minecraft-like. Do not use it as the final zombie look:
 
 ```text
 original/assets/zombie_texture_zombie_texture_dffb99f7-a6c8-4cb6-97a1-40611bd2ccea.webp
 ```
 
-Texture setup:
-
-```js
-texture.magFilter = THREE.NearestFilter;
-texture.minFilter = THREE.NearestFilter;
-texture.colorSpace = THREE.SRGBColorSpace;
-```
-
-If texture mapping is unreliable, use colored block materials instead. A clear colored block zombie is better than a broken textured gray shell.
+Use low-poly humanoid colored materials or a non-blocky sprite impostor instead. A cube/block-grid zombie is rejected.
 
 ### Remove Placeholder Shells
 
@@ -83,7 +78,9 @@ Reject any enemy that has:
 
 - Default gray material.
 - Untextured gray outer hull.
-- Capsule shell around a blocky body.
+- Capsule shell around the body.
+- Minecraft/block-grid body.
+- Cube head/body/arms/legs as the final visual.
 - Invisible hitbox rendered as a visible gray mesh.
 - Same material as the ground.
 
@@ -271,7 +268,7 @@ Problems:
 
 Required fixes:
 1. Remove all visible gray placeholder shells from enemies.
-2. Build a readable normal zombie first: blocky head, torso, arms, legs, green skin, teal shirt, dark pants, visible eyes.
+2. Build a readable normal zombie first: low-poly horror humanoid, rounded/capsule head, tapered torso, bent arms, uneven legs, green skin, teal shirt, dark pants, visible eyes.
 3. Every enemy mesh must have intentional material/color/texture. No default gray material.
 4. Add invisible hit colliders for enemies. Do not rely only on exact visible mesh raycast.
 5. Normal zombie health = 3 and it must die in 3 body shots.
@@ -283,7 +280,7 @@ Required fixes:
 
 Acceptance:
 - No enemy has a visible gray shell.
-- Normal zombies are green/teal and readable.
+- Normal zombies are green/teal, readable, and not block-grid/Minecraft style.
 - A normal zombie dies in exactly 3 body shots from the starting gun.
 - Distant enemies can be hit when the crosshair is visually on them.
 - Hit feedback is obvious.
@@ -296,6 +293,7 @@ Reject the Maker output if:
 
 - Any enemy still has a visible gray capsule/box shell.
 - Hitboxes are visible during normal play.
+- Zombies still look like Minecraft/block-grid characters.
 - Normal zombies do not die in 3 body shots.
 - Shooting only works at point-blank range.
 - Enemies stay tiny and unreadable behind fog.
