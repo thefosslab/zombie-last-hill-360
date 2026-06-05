@@ -4,7 +4,7 @@ This folder contains the extracted Astrocade published build for:
 
 `https://www.astrocade.com/games/zombie-last-hill/01KSEDNMD1G288092SE29M2Y8J`
 
-It also contains the current 360-degree gameplay update and the design plan for the next light tower-defense layer.
+It also contains the current 360-degree gameplay update, Maker handoff instructions, and the design plan for in-run roguelite builds plus out-of-run progression.
 
 ## Play
 
@@ -39,4 +39,6 @@ Verified locally with Chrome headless WebGL: the original start screen renders f
 
 ## Design
 
-See `DESIGN.md` for the current game design, proposed light tower-defense robot points, upgrade structure, and IAA monetization plan.
+See `DESIGN.md` for the current product direction.
+
+See `MAKER_HANDOFF.md` before asking Maker to rebuild or extend the game. The first Maker task should be scene reconstruction only, not progression or monetization.

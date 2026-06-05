@@ -1,169 +1,220 @@
 # Zombie Last Hill - Game Design
 
-## Current Product Direction
+## Product Direction
 
-`Zombie Last Hill` is a 360-degree hilltop survival shooter. The player holds a central position, aims around the full defensive ring, survives escalating zombie waves, collects supplies, and pushes for higher wave scores.
+`Zombie Last Hill` should become a 360-degree holdout shooter with in-run roguelite builds and out-of-run progression.
 
-The current build is best positioned as an IAA-first hybrid-casual game:
+The game should not become a traditional tower-defense game. The player remains the main combat actor. Robots are support units and progression targets, not the core replacement for shooting.
 
-- Low barrier: immediate shooting, simple controls, short sessions.
-- Medium depth: wave pressure, enemy priority, supplies, upgrades, and future defensive placements.
-- Monetization fit: rewarded ads at natural fail/reward moments, with interstitials only at clean wave transitions.
+Core structure:
+
+```text
+Out-of-run progression
+Choose and upgrade weapon / robot / base / talents
+↓
+Start a chapter run
+Survive 360-degree zombie waves from the hilltop
+↓
+Kill enemies and gain in-run XP
+Choose one of three temporary upgrades
+↓
+Build a run-specific combat style
+Fight elite waves and a chapter boss
+↓
+Die or clear the chapter
+Earn coins / parts / blueprints / chests
+↓
+Return to out-of-run progression
+Upgrade permanent power and push the next chapter
+```
 
 ## Current Playable Content
 
-- Full 360-degree horizontal aiming.
-- Circular enemy, dog pack, and airdrop spawn coverage.
+- First-person 360-degree hilltop defense.
+- Full circular enemy, dog pack, and airdrop spawn coverage.
 - Wave-based survival loop.
-- Supply drops and inventory item usage.
-- Multiple enemy roles, including standard zombies, runners, helmet zombies, crawlers, giants, bats, bone throwers, screamers, and dog packs.
+- Airdrops and inventory item usage.
+- Multiple enemy roles: normal zombie, crawler, helmet zombie, runner, giant, bat, dog, bone thrower, and screamer.
 - Local runtime shim for Astrocade APIs, assets, config, logs, and local leaderboard.
 
-## Core Loop
+## Core Pillars
 
-1. Start wave.
-2. Scan 360-degree threat directions.
-3. Shoot priority targets and manage immediate danger.
-4. Collect or use supplies when pressure allows.
-5. Clear wave or die.
-6. Receive reward, upgrade, revive, or restart.
+1. Active shooting: aim, track, prioritize, and kill threats.
+2. Run building: each run creates a temporary build through three-choice upgrades.
+3. Permanent growth: failed runs still feed out-of-run upgrades.
 
-The target session length should be 3-5 minutes for early users, with strong replay pressure after death.
+## In-Run Loop
 
-## Next Gameplay Depth: Light Tower Defense
+```text
+Start wave
+↓
+Enemies approach from all 360 degrees
+↓
+Player shoots priority targets
+↓
+Kills grant XP and supplies create tactical decisions
+↓
+XP level-up opens one-of-three upgrades
+↓
+Temporary upgrades shape this run
+↓
+Elite/Boss waves test the build
+```
 
-The strongest next layer is light tower-defense support, not full passive tower defense.
+Target run length:
 
-Player role:
+- Early chapters: 5-8 minutes.
+- Chapter format: 10 waves.
+- Recommended structure: wave 3 elite, wave 6 elite, wave 10 boss.
 
-- Active shooter.
-- Emergency responder.
-- Priority-target killer.
-- Defender of weak sides.
+## In-Run Upgrade Lines
 
-Robot role:
+Keep upgrades temporary. They reset at the end of the run.
 
-- Hold lanes.
-- Create strategic coverage.
-- Buy time.
-- Become a repair/protection objective.
+Firepower line:
 
-### First Tower-Defense Prototype
+- Fire rate.
+- Pierce.
+- Explosive bullets.
+- Shotgun spread.
+- Critical chain.
 
-Add two robot points first:
+Survival line:
 
-- Left-side robot point.
-- Right-side robot point.
+- Shield.
+- Lifesteal.
+- Damage reduction.
+- Emergency heal.
+- One-time death protection.
 
-Each robot should cover a limited angle, not the full circle. The player still needs to rotate, rescue weak areas, and kill high-priority enemies.
+Robot line:
 
-Recommended first robot types:
+- Robot damage.
+- Robot fire rate.
+- Robot temporary repair.
+- Robot fire/electric/freeze module.
+- Temporary extra support drone.
 
-- Machine-gun robot: stable damage, good against normal zombies.
-- Shock or shotgun robot: short-range knockback, good against breakthrough pressure.
-- Freeze robot: slows groups and creates control windows.
+Supply line:
 
-Robot constraints:
+- Airdrop cooldown reduction.
+- Larger pickup range.
+- Better supply rewards.
+- Extra medkit chance.
+- Ammo/overdrive bonus.
 
-- Robots can be damaged.
-- Robots can overheat, reload, or temporarily stop firing.
-- Some enemies should target robots directly.
-- Broken robots create urgent pressure rather than ending the run instantly.
+## Evolution Rules
 
-## Enemy Design After Robots
+Upgrades should create goals, not only flat numbers.
 
-Enemy roles should force the player to make target-priority decisions:
+Examples:
 
-- Runner: rushes robot points.
-- Giant: damages defensive points heavily.
-- Bone thrower: chips robot health from range.
-- Screamer: accelerates or summons nearby waves.
-- Bat: breaks player comfort by attacking from elevation or odd angles.
+```text
+Pierce Lv.5 + electromagnetic core = railgun bullets
+Shotgun Lv.5 + explosive powder = explosive scatter
+Robot Lv.5 + fire module = flame drone
+Shield Lv.5 + medical module = regenerative shield
+```
 
-## Upgrade Structure
+## Out-of-Run Progression
 
-Between waves, offer one of three upgrades:
+Permanent progression should be simple at first.
 
-- Increase robot damage.
-- Repair a robot.
-- Add temporary armor to one side.
-- Add fire, pierce, freeze, or chain effects.
-- Reduce supply cooldown.
-- Improve player reload, damage, or critical shots.
-
-Permanent progression can use scrap as soft currency:
+Systems:
 
 - Weapon upgrades.
-- Robot slot upgrades.
-- Robot type unlocks.
-- Base durability upgrades.
-- Cosmetic weapon and robot skins.
+- Robot upgrades.
+- Base upgrades.
+- Talent tree.
+- Chapter progression.
 
-## IAA Monetization Design
+Resources:
 
-Rewarded video should be the main ad format:
+- Coins: weapon and talent upgrades.
+- Parts: robot and base upgrades.
+- Blueprints: unlock new weapons, robots, and chapter features.
 
-- Death revive: revive once with partial health and a small area clear.
-- Wave reward double: double scrap or supply rewards after clearing a wave.
-- Upgrade reroll: refresh the three upgrade choices.
-- Robot repair: repair one broken robot during a wave or before the next wave.
-- Temporary robot slot: unlock an extra robot point for the current run.
+Design goal:
 
-Interstitials should only appear at natural breaks:
+```text
+The player loses a run, earns resources, upgrades permanent power, and believes the next run can push farther.
+```
 
-- After wave 2 or wave 3, never during active combat.
-- After boss wave clear.
-- After failure/settlement.
+## Robot Positioning
 
-Avoid banner ads inside combat. They compete with aiming, threat indicators, and mobile screen space.
+Robots are support units, not a tower-defense system.
 
-## Metrics To Validate
+Out-of-run:
 
-Core retention:
+- Unlock robot support.
+- Upgrade robot base damage, health, and ability.
+- Unlock robot variants.
+
+In-run:
+
+- Temporarily improve robot damage or ability through three-choice upgrades.
+- Use robots to reduce pressure from one side.
+- Keep the player responsible for killing key enemies.
+
+Robots must not clear waves by themselves.
+
+## Monetization Placement
+
+Rewarded ads should be optional and tied to natural run moments.
+
+Best placements:
+
+- Death revive.
+- Settlement reward double.
+- Free chest.
+- Upgrade reroll.
+- Daily supply.
+
+Interstitials should only appear at clean breaks:
+
+- After run settlement.
+- After chapter clear.
+- After a non-first death, with frequency caps.
+
+No combat interruption.
+
+## First Implementation Target
+
+Do not add every system at once. The next product milestone should be:
+
+1. In-run XP bar.
+2. Kill-based level-up.
+3. One-of-three in-run upgrade screen.
+4. Run settlement screen.
+5. Coins as the first permanent resource.
+6. Out-of-run weapon upgrade.
+7. Robot upgrade entry can exist visually, but robot depth can wait.
+
+## Validation Metrics
+
+Retention:
 
 - D1, D3, D7 retention.
-- Average session length.
-- Average wave reached.
-- Death source and death direction.
+- Average run length.
+- Chapter completion rate.
+- Wave reached on failed runs.
 
-Ad health:
+Build health:
 
-- Rewarded ad opt-in rate by placement.
-- Impressions per session.
-- Ad ARPDAU.
-- Churn after interstitial.
-- Revive ad completion and post-revive survival time.
-
-Gameplay balance:
-
-- Robot damage share.
-- Player damage share.
-- Robot destruction frequency.
 - Upgrade pick rates.
-- Enemy type kill/death contribution.
+- Damage share by upgrade line.
+- Most common death waves.
+- Boss failure rate.
 
-## Roadmap
+Economy:
 
-Phase 1:
+- Coins earned per run.
+- Upgrade purchase frequency.
+- Time to first permanent upgrade.
 
-- Keep current 360-degree shooter.
-- Add edge threat indicators or radar.
-- Add two robot points.
-- Add robot damage and repair state.
-- Add wave-end three-choice upgrades.
+Ads:
 
-Phase 2:
-
-- Add rewarded revive.
-- Add wave reward double.
-- Add upgrade reroll.
-- Add robot repair reward.
-- Add analytics events for retention and ad placement.
-
-Phase 3:
-
-- Add more robot slot layouts.
-- Add boss waves.
-- Add permanent upgrade tree.
-- Add daily missions.
-- Add cosmetics and optional remove-ads purchase if the platform supports it.
+- Rewarded revive opt-in.
+- Settlement double opt-in.
+- Upgrade reroll opt-in.
+- Churn after interstitial.
