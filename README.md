@@ -32,6 +32,7 @@ The root `index.html` redirects to `original/`.
 - `MAKER_HANDOFF.md`: scene reconstruction instructions for Maker
 - `ART_DIRECTION.md`: color, lighting, material, and readability rules
 - `MAKER_ENEMY_COMBAT_FIX.md`: enemy visuals and hit detection fix instructions
+- `MAKER_TEXTURE_AIRDROP_FIX.md`: texture/material pass and airdrop state bugfix instructions
 
 Verified locally with Chrome headless WebGL: the original start screen renders from local files.
 
@@ -49,3 +50,5 @@ See `MAKER_HANDOFF.md` before asking Maker to rebuild or extend the game. The fi
 After the scene structure is correct, use `ART_DIRECTION.md` for the color pass.
 
 If enemies look like gray placeholders or cannot be killed reliably, use `MAKER_ENEMY_COMBAT_FIX.md`.
+
+If the game still looks too plain, airdrops clip underground, or the player carries the gun while collecting supplies, use `MAKER_TEXTURE_AIRDROP_FIX.md`.

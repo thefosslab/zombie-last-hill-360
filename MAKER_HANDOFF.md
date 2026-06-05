@@ -28,6 +28,7 @@ Do not add progression, robots, ads, or new enemies before the scene passes acce
 - `DESIGN.md`: product direction for in-run roguelite and out-of-run progression.
 - `ART_DIRECTION.md`: color, lighting, material, and readability rules for Maker art passes.
 - `MAKER_ENEMY_COMBAT_FIX.md`: enemy model/material and shooting hit detection bugfix rules.
+- `MAKER_TEXTURE_AIRDROP_FIX.md`: texture/material pass plus airdrop landing and collection-state fixes.
 
 ## Scene Identity
 
@@ -215,6 +216,12 @@ Do not let Maker change layout, camera, spawning, progression, robots, or moneti
 If enemies look like gray placeholders, have no texture, or cannot be killed reliably, ask Maker to read `MAKER_ENEMY_COMBAT_FIX.md`.
 
 That pass should only fix enemy materials/models, invisible hit colliders, shooting range, aim tolerance, health, and hit feedback.
+
+## Texture And Airdrop Fixes
+
+If the game still looks too plain, lacks texture design, drops airdrops underground, or keeps the first-person gun visible while collecting supplies, ask Maker to read `MAKER_TEXTURE_AIRDROP_FIX.md`.
+
+That pass should only fix material/texture identity, terrain-aware airdrop height, and airdrop collection player state.
 
 ## Maker Prompt: Phase 0 Scene
 
