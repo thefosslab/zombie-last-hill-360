@@ -32,6 +32,7 @@ Do not add progression, robots, ads, or new enemies before the scene passes acce
 - `MAKER_HARD_BLOCKERS.md`: hard blocking fixes for gun-visible airdrop collection and rejected block-grid zombies.
 - `MAKER_PHYSICAL_AIRDROP_COLLECTION.md`: required implementation for physical airdrop pickup as a risk/reward decision.
 - `MAKER_GROUNDED_AIRDROP_MOVEMENT.md`: required implementation for grounded run-to-airdrop movement and connected ramp terrain.
+- `maker_reference/continuous-terrain-airdrop.mjs`: copyable reference for continuous hill terrain, fixed-gate airdrop placement, and ground-following movement.
 - `MAKER_AIRDROP_REMOTE_COLLECT.md`: fallback design that removes run-to-airdrop and collects supplies remotely from the turret.
 
 ## Scene Identity
@@ -68,10 +69,10 @@ Use these coordinates as reconstruction anchors.
 
 | Element | Required Design |
 |---|---|
-| Hilltop platform | Circular/cylindrical platform, radius about `6`, height about `1`, center at `(0, 10, 0)` |
+| Hilltop ground cap | Flat circular top of the same connected terrain mesh, radius about `6`, around Y `10.5`; not a separate floating platform |
 | Player camera | Around `(0, 15, 0)` |
 | Sandbag ring | Radius about `4`, 12 blocky sandbags around center |
-| Slope | Circular slope from radius `6` to about `120` |
+| Slope | Connected circular slope from radius `6` to about `120`; it must share edge/height continuity with the hilltop ground cap |
 | Slope top Y | Around `9.5` |
 | Slope bottom Y | Around `-15` |
 | Outer wasteland | Ring from radius `120` to about `400` |
@@ -209,6 +210,19 @@ Required first pass HUD:
 
 Do not focus on polishing HUD before the 3D scene is correct.
 
+## Floating Platform Rejection
+
+Reject the scene immediately if the hilltop is a separate suspended object.
+
+Required:
+
+- The hilltop is the flat top cap of one continuous terrain mass.
+- The slope starts directly at the hilltop edge.
+- The player can descend by following visible ground.
+- Airdrop pickup movement uses ground height every frame.
+
+If Maker produces a floating platform or flying airdrop movement, stop and use `MAKER_GROUNDED_AIRDROP_MOVEMENT.md` plus `maker_reference/continuous-terrain-airdrop.mjs`.
+
 ## Art Direction
 
 After the scene structure is accepted, ask Maker to read `ART_DIRECTION.md` and perform an art/color pass only.
@@ -248,7 +262,7 @@ First rebuild only the scene shell for Zombie Last Hill.
 The scene must be a first-person 360-degree hilltop defense arena:
 - Camera at the center of an elevated hilltop, around (0, 15, 0).
 - Full 360-degree horizontal rotation.
-- Small circular hilltop platform, radius around 6.
+- Small flat circular hilltop ground cap, radius around 6, connected to the slope as one terrain mass.
 - Circular sandbag defense ring around radius 4.
 - 12 sandbag blocks, with every other block having a second layer.
 - Circular slope falling from radius 6 to radius 120.

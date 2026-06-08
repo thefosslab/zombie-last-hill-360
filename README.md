@@ -36,6 +36,7 @@ The root `index.html` redirects to `original/`.
 - `MAKER_HARD_BLOCKERS.md`: hard blocker instructions for gun-visible pickup and rejected block-grid zombies
 - `MAKER_PHYSICAL_AIRDROP_COLLECTION.md`: required physical airdrop pickup implementation
 - `MAKER_GROUNDED_AIRDROP_MOVEMENT.md`: hard blocker for grounded run-to-airdrop movement and connected ramp terrain
+- `maker_reference/continuous-terrain-airdrop.mjs`: copyable continuous terrain and grounded airdrop movement reference
 - `MAKER_AIRDROP_REMOTE_COLLECT.md`: non-current fallback that removes run-to-airdrop and uses remote supply collection
 
 Verified locally with Chrome headless WebGL: the original start screen renders from local files.
@@ -62,5 +63,7 @@ If the player still carries the gun during airdrop pickup or zombies still look 
 Physical airdrop pickup is the current direction. If Maker still shows the gun while collecting airdrops, use `MAKER_PHYSICAL_AIRDROP_COLLECTION.md` and require hard detach of `FirstPersonWeaponRoot` outside turret mode.
 
 If the player flies to the airdrop, moves through an elevated layer, or the ramp/slope does not look walkable, use `MAKER_GROUNDED_AIRDROP_MOVEMENT.md` and require terrain-following movement.
+
+If Maker keeps building a floating platform, give it `maker_reference/continuous-terrain-airdrop.mjs` and require the fixed south-gate acceptance pass before restoring 360-degree airdrops.
 
 Only use `MAKER_AIRDROP_REMOTE_COLLECT.md` if physical pickup is explicitly removed later.

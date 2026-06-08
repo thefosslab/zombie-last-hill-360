@@ -264,6 +264,8 @@ The player must physically run on the terrain, not fly through a camera tween.
 
 If Maker creates a floating/elevated path or moves the camera directly from turret Y to crate Y, stop and use `MAKER_GROUNDED_AIRDROP_MOVEMENT.md`.
 
+If Maker still cannot make it grounded, use `maker_reference/continuous-terrain-airdrop.mjs` and force the fixed south-gate acceptance pass first.
+
 Required:
 
 - Move only `x,z` along the airdrop path.
@@ -271,6 +273,7 @@ Required:
 - Set camera height from `getGroundY(x, z) + EYE_HEIGHT`.
 - Build a connected visible slope/ramp from hilltop to wasteland.
 - Add a visible sandbag exit gap or ramp.
+- Keep the hilltop as the top cap of one continuous terrain mesh, not a separate platform.
 
 Rejected:
 
@@ -278,6 +281,7 @@ Rejected:
 - Flying arc animation.
 - Invisible elevated walkway.
 - Floating layer between hilltop and airdrop.
+- Separate suspended hilltop platform.
 - Camera movement that ignores visible terrain.
 
 ## Airdrop Landing Still Required

@@ -4,6 +4,10 @@ Use this document when the physical airdrop pickup exists, but the player appear
 
 This is a hard blocker. Do not add upgrades, robots, ads, UI polish, or new enemies until this is fixed.
 
+If Maker has already built a floating platform, delete that terrain and replace it with a continuous walkable hill. Do not try to hide the problem with camera easing.
+
+Use `maker_reference/continuous-terrain-airdrop.mjs` as the copyable reference implementation.
+
 ## Current Product Rule
 
 Physical airdrop pickup stays.
@@ -17,6 +21,17 @@ The player must:
 5. Re-enter the turret.
 
 The player must not fly, glide through air, teleport, or move across an invisible elevated bridge.
+
+## Current Failure Diagnosis
+
+The current Maker output is rejected because it appears to have:
+
+- A hilltop as a separate floating platform.
+- A slope or ramp that is not physically connected to the hilltop.
+- Player movement driven by camera tweening instead of ground contact.
+- A return path that visually lifts the player through air.
+
+The fix is not a better animation. The fix is continuous terrain plus ground-following movement.
 
 ## Root Cause To Fix
 
@@ -64,6 +79,19 @@ player.position.lerp(cratePlayerTarget, t);
 ```
 
 Do not interpolate from turret world Y to crate world Y directly.
+
+## Mandatory Simplified Acceptance Pass
+
+Before restoring full 360-degree random airdrop pickup, Maker must pass this simpler fixed setup:
+
+- Use one fixed sandbag exit gap on the south side.
+- Spawn the acceptance-test airdrop only in front of that gate, radius `35-40`.
+- Build one visible dirt path from the hilltop through the gate to the crate.
+- The player must walk down that same visible path and run back up it.
+
+After this fixed-path version is accepted, 360-degree airdrops can return by adding more gates or a path planner.
+
+Do not attempt full 360 airdrop movement while the basic south-gate path still looks like flying.
 
 ## Ground Height Sampling
 
@@ -144,6 +172,27 @@ Rejected terrain:
 - A crate placed on a lower surface while the player moves on a higher invisible layer.
 
 The slope can be stylized, low-poly, and simplified, but it must be physically connected.
+
+Maker must not create an object named or treated as `FloatingPlatform`, `UpperPlatform`, `SkyBridge`, `AirPath`, or equivalent. The flat hilltop is just the top cap of the same terrain mass.
+
+## Copyable Terrain Reference
+
+The repository includes a reference file:
+
+```text
+maker_reference/continuous-terrain-airdrop.mjs
+```
+
+Use it to create:
+
+- `createContinuousTerrain(THREE)`: one connected radial terrain mesh.
+- `getGroundYAnalytic(x,z)`: the single source of truth for ground height.
+- `getFixedAcceptanceAirdropPosition()`: fixed south-gate crate position for acceptance.
+- `placeAirdropOnGround(crate,x,z)`: crate placement on the same ground.
+- `updateGroundedPathMovement(state,dt,camera)`: X/Z path movement with camera Y sampled from ground.
+- `assertGrounded(camera,playerMode)`: hard failure if the player is flying.
+
+During this fix, Maker should copy that reference first, then adapt names to the project.
 
 ## Exit Path
 
@@ -281,6 +330,9 @@ Fix only the airdrop movement and ramp/terrain structure.
 Read MAKER_GROUNDED_AIRDROP_MOVEMENT.md and implement exactly.
 
 Hard requirements:
+- If there is a floating platform, delete it.
+- Use maker_reference/continuous-terrain-airdrop.mjs as the implementation reference.
+- First pass must use a fixed south sandbag gate and a fixed crate in front of that gate.
 - Delete direct 3D camera/player interpolation from turret to crate.
 - Movement to the airdrop must interpolate only X/Z along a visible ground path.
 - Every frame, sample terrain height with getGroundY(x,z).
@@ -295,4 +347,5 @@ Acceptance:
 - Camera Y stays within 0.25 units of groundY + eye height during RUN_TO_AIRDROP and RETURN_TO_TURRET.
 - Video/screenshot clearly shows downhill movement to crate and uphill movement back to turret.
 - No first-person mounted gun appears while running, looting, or returning.
+- The hilltop is not a separate floating platform; it is the flat top of a continuous terrain mesh.
 ```
