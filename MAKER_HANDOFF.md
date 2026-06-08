@@ -32,6 +32,7 @@ Do not add progression, robots, ads, or new enemies before the scene passes acce
 - `MAKER_HARD_BLOCKERS.md`: hard blocking fixes for gun-visible airdrop collection and rejected block-grid zombies.
 - `MAKER_PHYSICAL_AIRDROP_COLLECTION.md`: required implementation for physical airdrop pickup as a risk/reward decision.
 - `MAKER_GROUNDED_AIRDROP_MOVEMENT.md`: required implementation for grounded run-to-airdrop movement and connected ramp terrain.
+- `MAKER_VISIBILITY_SANDBAG_FIX.md`: hard blocking fix for sandbags/camera blocking the view of slope and zombies.
 - `maker_reference/continuous-terrain-airdrop.mjs`: copyable reference for continuous hill terrain, fixed-gate airdrop placement, and ground-following movement.
 - `MAKER_AIRDROP_REMOTE_COLLECT.md`: fallback design that removes run-to-airdrop and collects supplies remotely from the turret.
 
@@ -52,6 +53,7 @@ Required:
 - First-person camera.
 - FOV: around 75 degrees.
 - Camera position: centered on hilltop, approximately `(0, 15, 0)`.
+- Turret camera height must be high enough to see over low sandbags: terrain top Y plus `3.8-4.8`.
 - Initial pitch: looking slightly down at the slope, around `-0.4`.
 - Horizontal yaw: full 360 degrees.
 - Player does not walk freely during normal combat.
@@ -62,6 +64,7 @@ Acceptance:
 - The player can rotate all the way around.
 - Looking down reveals enemies climbing the hill.
 - The sandbag ring remains visually close around the player.
+- The center crosshair view is open to the slope and enemies, not blocked by sandbags.
 
 ## Terrain Layout
 
@@ -98,11 +101,14 @@ far swamp/water and sky dome
 
 Sandbags:
 
-- 12 sandbag blocks around the player.
-- Each block roughly `2 x 1 x 1`.
-- Main layer around Y `10.7`.
-- Second stacked layer every other sandbag around Y `11.5`.
+- 12 low sandbag blocks around the player.
+- Each block roughly `1.55 x 0.42 x 0.55`.
+- Radius around `5.2`, outside the gun/camera.
+- Main layer top must stay below terrain top Y plus `1.15`.
+- Optional second-layer detail must stay below terrain top Y plus `1.65` and must not block the crosshair.
 - Blocky style is acceptable for sandbags only. Do not apply this to enemy characters.
+
+The sandbag ring is low cover, not a wall. It must never fill the center of the screen or hide the slope/zombies.
 
 Cardinal decorations:
 
@@ -223,6 +229,19 @@ Required:
 
 If Maker produces a floating platform or flying airdrop movement, stop and use `MAKER_GROUNDED_AIRDROP_MOVEMENT.md` plus `maker_reference/continuous-terrain-airdrop.mjs`.
 
+## Visibility Rejection
+
+Reject the scene immediately if sandbags, crates, decorations, or walls block the turret view.
+
+Required:
+
+- The gun/turret is visible in the lower foreground.
+- Sandbags stay in the lower edge/sides of the screen.
+- The center 60% of the screen shows slope, wasteland, and approaching zombies.
+- The crosshair does not sit on a sandbag.
+
+If Maker produces giant sandbag boxes or walls, stop and use `MAKER_VISIBILITY_SANDBAG_FIX.md`.
+
 ## Art Direction
 
 After the scene structure is accepted, ask Maker to read `ART_DIRECTION.md` and perform an art/color pass only.
@@ -263,8 +282,8 @@ The scene must be a first-person 360-degree hilltop defense arena:
 - Camera at the center of an elevated hilltop, around (0, 15, 0).
 - Full 360-degree horizontal rotation.
 - Small flat circular hilltop ground cap, radius around 6, connected to the slope as one terrain mass.
-- Circular sandbag defense ring around radius 4.
-- 12 sandbag blocks, with every other block having a second layer.
+- Circular low sandbag defense ring around radius 5.2.
+- 12 low sandbag blocks. Do not make them tall walls. They must not block the center view.
 - Circular slope falling from radius 6 to radius 120.
 - Outer wasteland ring with rocks, dead trees, debris, fog, and distant murky water.
 - Apocalyptic sky dome with smoke columns.
@@ -281,7 +300,8 @@ Acceptance:
 2. The player can rotate 360 degrees.
 3. Zombies can approach from front, back, left, and right.
 4. The scene is not flat; enemies visibly come from below/up the slope.
-5. No progression, robots, ads, or new systems are added in this pass.
+5. Sandbags do not block the crosshair or center view.
+6. No progression, robots, ads, or new systems are added in this pass.
 ```
 
 ## Maker Prompt: Phase 1 Current Combat
@@ -341,6 +361,7 @@ Before asking Maker to add progression, verify:
 - Camera yaw is not locked to one direction.
 - The hilltop is raised above the surrounding terrain.
 - The player is inside a circular sandbag ring.
+- The sandbag ring does not block the center view or crosshair.
 - Enemies spawn from all four quadrants.
 - Enemies approach from below/up the slope.
 - The sky/fog/wasteland mood is visible.
@@ -356,6 +377,7 @@ Reject the output if:
 - Enemies only spawn from one direction.
 - The player can walk away from the hilltop during normal combat.
 - The sandbag ring is missing.
+- The sandbag ring is scaled like walls and blocks the view of enemies.
 - Maker adds robots/progression before scene acceptance.
 - Maker turns the game into a lane tower-defense layout.
 - Maker removes the current 360-degree shooting identity.

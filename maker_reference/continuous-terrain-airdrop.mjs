@@ -9,9 +9,15 @@ export const TERRAIN = {
   topY: 10.5,
   slopeBottomY: -15,
   eyeHeight: 1.6,
+  turretCameraHeight: 4.2,
+  turretCameraPitch: -0.32,
   gateAngle: Math.PI / 2,
   gateHalfWidth: 1.25,
-  airdropRadius: 38
+  airdropRadius: 38,
+  sandbagRadius: 5.2,
+  sandbagLength: 1.55,
+  sandbagThickness: 0.55,
+  sandbagHeight: 0.42
 };
 
 export const PlayerMode = {
@@ -103,25 +109,68 @@ export function createContinuousTerrain(THREE, options = {}) {
 export function createSouthGateSandbags(THREE, scene, createSandbagMesh) {
   const sandbagMeshes = [];
   const count = 12;
-  const radius = 4.4;
+  const radius = TERRAIN.sandbagRadius;
+  const makeSandbag = createSandbagMesh ?? (() => createVisibleSandbagMesh(THREE));
 
   for (let i = 0; i < count; i += 1) {
     const angle = (i / count) * Math.PI * 2;
     if (isAngleNear(angle, TERRAIN.gateAngle, 0.34)) continue;
 
-    const bag = createSandbagMesh();
+    const bag = makeSandbag();
     bag.name = `Sandbag_${i}`;
     bag.position.set(
       Math.cos(angle) * radius,
-      TERRAIN.topY + 0.35,
+      TERRAIN.topY + TERRAIN.sandbagHeight * 0.5 + 0.08,
       Math.sin(angle) * radius
     );
     bag.rotation.y = -angle + Math.PI / 2;
+    bag.userData.blocksTurretSight = true;
     scene.add(bag);
     sandbagMeshes.push(bag);
   }
 
   return sandbagMeshes;
+}
+
+export function createVisibleSandbagMesh(THREE, material) {
+  const geometry = new THREE.BoxGeometry(
+    TERRAIN.sandbagLength,
+    TERRAIN.sandbagHeight,
+    TERRAIN.sandbagThickness
+  );
+
+  const sandbagMaterial = material ?? new THREE.MeshStandardMaterial({
+    color: 0x8b7a57,
+    roughness: 0.95,
+    metalness: 0
+  });
+
+  const mesh = new THREE.Mesh(geometry, sandbagMaterial);
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  mesh.userData.blocksTurretSight = true;
+  return mesh;
+}
+
+export function getTurretCameraPosition(THREE) {
+  return new THREE.Vector3(0, TERRAIN.topY + TERRAIN.turretCameraHeight, 0);
+}
+
+export function applyTurretCamera(camera) {
+  camera.position.set(0, TERRAIN.topY + TERRAIN.turretCameraHeight, 0);
+  camera.rotation.x = TERRAIN.turretCameraPitch;
+  camera.fov = Math.max(camera.fov ?? 75, 75);
+  camera.updateProjectionMatrix?.();
+}
+
+export function assertTurretSightlineClear(camera, raycaster, scene) {
+  raycaster.setFromCamera({ x: 0, y: 0 }, camera);
+  const hits = raycaster.intersectObjects(scene.children, true);
+  const blocker = hits.find((hit) => hit.object.userData?.blocksTurretSight);
+
+  if (blocker && blocker.distance < 22) {
+    throw new Error(`[BLOCKER] Turret sightline blocked by ${blocker.object.name}`);
+  }
 }
 
 export function getFixedAcceptanceAirdropPosition() {
